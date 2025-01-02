@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import './HeroSection.css';
 import axios from 'axios';
-import { Line } from 'react-chartjs-2';
-import 'chart.js/auto';
 
 const HeroSection = () => {
   const [searchInput, setSearchInput] = useState('');
   const [stockData, setStockData] = useState(null);
   const [error, setError] = useState('');
+  const [ticker, setTicker] = useState(''); // To pass the ticker for TradingView
 
   const handleSearch = async () => {
     if (!searchInput) {
@@ -19,6 +18,7 @@ const HeroSection = () => {
       setError('');
       const response = await axios.get(`http://127.0.0.1:5000/api/stock?ticker=${searchInput}`);
       setStockData(response.data);
+      setTicker(searchInput.toUpperCase()); // Save the ticker to use in TradingView
     } catch (err) {
       setError('Failed to fetch stock data.');
       console.error(err);
@@ -41,6 +41,7 @@ const HeroSection = () => {
       </div>
       {error && <p className="error">{error}</p>}
       {stockData && (
+        <div className="stock-details-container">
         <div className="stock-details">
           <h2>{stockData.ticker}</h2>
           <table>
@@ -71,26 +72,21 @@ const HeroSection = () => {
               </tr>
             </tbody>
           </table>
-          <div className="stock-chart">
-            <Line
-              data={{
-                labels: stockData.dates,
-                datasets: [
-                  {
-                    label: 'Price History',
-                    data: stockData.price_history,
-                    borderColor: 'rgba(250, 204, 21, 0.8)',
-                    backgroundColor: 'rgba(250, 204, 21, 0.2)',
-                  },
-                ],
-              }}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-              }}
-            />
-          </div>
         </div>
+        <div className="tradingview-chart">
+          <iframe
+            src={`https://s.tradingview.com/embed-widget/advanced-chart/?symbol=${ticker}`}
+            width="100%"
+            height="500px"
+            frameBorder="0"
+            allowTransparency="true"
+            scrolling="no"
+            style={{ border: 'none' }}
+            title={`TradingView chart for ${ticker}`}
+          ></iframe>
+        </div>
+      </div>
+      
       )}
     </div>
   );
