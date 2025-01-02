@@ -1,0 +1,57 @@
+/* Navbar with dark theme */
+.navbar {
+    background: linear-gradient(90deg, #1e293b, #0f172a, #1e293b);
+    background-size: 300% 300%;
+    animation: gradientShift 8s ease infinite;
+    color: #f1f5f9;
+    padding: 1rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 50;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #facc15;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+  
+  .nav-links li {
+    cursor: pointer;
+    color: #f1f5f9;
+    transition: color 0.3s;
+  }
+  
+  .nav-links li:hover {
+    color: #facc15;
+  }
+  
+  /* Reuse keyframe animation for gradient */
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  

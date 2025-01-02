@@ -1,0 +1,115 @@
+/* Hero Section with smooth dark theme */
+.hero-section {
+    background: linear-gradient(90deg, #1e293b, #0f172a, #1e293b);
+    background-size: 300% 300%;
+    animation: gradientShift 8s ease infinite;
+    padding: 2rem 1rem;
+    text-align: center;
+    color: #f1f5f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Gradient animation */
+  @keyframes gradientShift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #f1f5f9;
+  }
+  
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    color: #94a3b8;
+  }
+  
+  /* Search bar container */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  /* Search input field */
+  .search-bar input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid #334155;
+    border-radius: 9999px;
+    background-color: #1e293b;
+    color: #f1f5f9;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .search-bar input::placeholder {
+    color: #94a3b8;
+  }
+  
+  .search-bar input:focus {
+    border-color: #facc15;
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
+  }
+  
+  /* Search button */
+  .search-button {
+    padding: 0.75rem 1.5rem;
+    background-color: #334155;
+    color: #f1f5f9;
+    border: none;
+    border-radius: 9999px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .search-button:hover {
+    background-color: #475569;
+    transform: scale(1.05);
+  }
+  .stock-details {
+    margin-top: 2rem;
+    color: #f1f5f9;
+    text-align: center;
+  }
+  
+  .stock-details table {
+    margin: 1rem auto;
+    border-collapse: collapse;
+    width: 80%;
+    max-width: 500px;
+  }
+  
+  .stock-details td {
+    border: 1px solid #334155;
+    padding: 0.5rem;
+    text-align: left;
+  }
+  
+  .stock-chart {
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 700px;
+    height: 400px;
+  }
+  
