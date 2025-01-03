@@ -34,7 +34,7 @@ The **Stock Analyzer Website** is a comprehensive platform for investors and tra
 ### Steps
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/stock-analyzer-website.git
+   git clone https://github.com/salan223/StockAnalyzer.git
    cd stock-analyzer-website
    ```
 
