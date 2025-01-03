@@ -60,7 +60,7 @@ The **Stock Analyzer Website** is a comprehensive platform for investors and tra
 3. **Frontend Setup**:
    - Navigate to the frontend folder:
      ```bash
-     cd frontend
+     cd stock-analyzer
      ```
    - Install dependencies:
      ```bash
