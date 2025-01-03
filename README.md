@@ -19,7 +19,7 @@ The **Stock Analyzer Website** is a comprehensive platform for investors and tra
 
 ### Backend
 - **Flask**: Manages the server-side logic and APIs.
-- **yFinance**: Fetches real-time stock data.
+- **yFinance**: Fetches real-time stock data from Yahoo Finance.
 
 ### Communication
 - **Axios**: Facilitates frontend-backend integration.
