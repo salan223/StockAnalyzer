@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
 import Footer from './components/Footer';
-import BackendTest from './components/BackendTest';
-
+import HeroSection from './components/HeroSection';
+import StockSearch from './components/StockSearch';
 
 const App = () => {
+  const searchSectionRef = useRef(null);
+
+  const scrollToSearch = () => {
+    searchSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div>
       <Navbar />
-      <HeroSection />
-      <BackendTest />
+      <HeroSection scrollToSearch={scrollToSearch} />
+      <div ref={searchSectionRef}>
+        <StockSearch />
+      </div>
       <Footer />
     </div>
   );
