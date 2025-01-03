@@ -53,21 +53,28 @@ def get_stock_data():
         if history.empty:
             return jsonify({'error': f'No data found for ticker {ticker}'}), 404
 
+        # Get company information
+        stock_info = stock.info
+        company_name = stock_info.get('shortName', 'N/A')
+        description = stock_info.get('longBusinessSummary', 'Description not available.')
+
         # Calculate basic metrics
         current_price = history['Close'][-1]
         previous_close = history['Close'][-2]
         price_change = current_price - previous_close
         percent_change = (price_change / previous_close) * 100
 
-        market_cap = stock.info.get('marketCap', 'N/A')
-        revenue = stock.info.get('totalRevenue', 'N/A')
-        dividend = stock.info.get('dividendRate', 'N/A')
-        open_price = stock.info.get('open', 'N/A')
-        is_undervalued = "Undervalued" if stock.info.get('forwardPE', 0) < 15 else "Overvalued"
+        market_cap = stock_info.get('marketCap', 'N/A')
+        revenue = stock_info.get('totalRevenue', 'N/A')
+        dividend = stock_info.get('dividendRate', 'N/A')
+        open_price = stock_info.get('open', 'N/A')
+        is_undervalued = "Undervalued" if stock_info.get('forwardPE', 0) < 15 else "Overvalued"
 
         # Prepare data for frontend
         stock_data = {
             'ticker': ticker.upper(),
+            'company_name': company_name,
+            'description': description,
             'current_price': round(current_price, 2),
             'previous_close': round(previous_close, 2),
             'price_change': round(price_change, 2),
