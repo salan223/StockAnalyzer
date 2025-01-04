@@ -1,19 +1,18 @@
 import yfinance as yf
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import numpy as np
-import requests
-import os
+import openai
 import logging
+import os
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for frontend communication
+CORS(app, origins=["http://localhost:3000"])  # Allow React app to access the backend
 
-# Use environment variable for API key
-NEWS_API_KEY = os.getenv('NEWS_API_KEY', '656a207c314d4439b45406ddadbb161a')  # Replace with your NewsAPI key
+# API Keys
+openai.api_key = os.getenv('OPENAI_API_KEY', 'your-openai-api-key')  # Replace with your OpenAI API key
 
 # Configure logging
-logging.basicConfig(level=logging.ERROR)
+logging.basicConfig(level=logging.DEBUG)  # Log all messages for debugging purposes
 
 @app.route('/api/stock-news', methods=['GET'])
 def get_stock_news():
@@ -22,12 +21,9 @@ def get_stock_news():
         return jsonify({'error': 'No ticker symbol provided'}), 400
 
     try:
-        # Fetch news for the stock ticker
-        news_url = f'https://newsapi.org/v2/everything?q={ticker}&apiKey={NEWS_API_KEY}'
+        news_url = f'https://newsapi.org/v2/everything?q={ticker}&apiKey=your-news-api-key'  # Replace with your NewsAPI key
         response = requests.get(news_url)
-        if response.status_code == 403:
-            return jsonify({'error': 'Invalid API key or rate limit exceeded'}), 403
-        elif response.status_code != 200:
+        if response.status_code != 200:
             return jsonify({'error': 'Failed to fetch news data'}), response.status_code
         
         news_data = response.json()
@@ -38,7 +34,6 @@ def get_stock_news():
         logging.error(f"Error fetching news: {e}")
         return jsonify({'error': 'Failed to fetch news'}), 500
 
-
 @app.route('/api/stock', methods=['GET'])
 def get_stock_data():
     ticker = request.args.get('ticker', '')
@@ -46,46 +41,23 @@ def get_stock_data():
         return jsonify({'error': 'No ticker symbol provided'}), 400
 
     try:
-        # Fetch stock data
         stock = yf.Ticker(ticker)
-        history = stock.history(period="1y")  # Fetch 1 year of price history
+        history = stock.history(period="1y")
 
         if history.empty:
             return jsonify({'error': f'No data found for ticker {ticker}'}), 404
 
-        # Get company information
         stock_info = stock.info
-        company_name = stock_info.get('shortName', 'N/A')
-        description = stock_info.get('longBusinessSummary', 'Description not available.')
-
-        # Calculate basic metrics
         current_price = history['Close'][-1]
         previous_close = history['Close'][-2]
         price_change = current_price - previous_close
         percent_change = (price_change / previous_close) * 100
 
-        market_cap = stock_info.get('marketCap', 'N/A')
-        revenue = stock_info.get('totalRevenue', 'N/A')
-        dividend = stock_info.get('dividendRate', 'N/A')
-        open_price = stock_info.get('open', 'N/A')
-        is_undervalued = "Undervalued" if stock_info.get('forwardPE', 0) < 15 else "Overvalued"
-
-        # Prepare data for frontend
         stock_data = {
             'ticker': ticker.upper(),
-            'company_name': company_name,
-            'description': description,
             'current_price': round(current_price, 2),
-            'previous_close': round(previous_close, 2),
             'price_change': round(price_change, 2),
             'percent_change': round(percent_change, 2),
-            'market_cap': market_cap,
-            'revenue': revenue,
-            'dividend': dividend,
-            'open_price': open_price,
-            'valuation': is_undervalued,
-            'price_history': history['Close'].tolist(),
-            'dates': history.index.strftime('%Y-%m-%d').tolist()
         }
         return jsonify(stock_data)
 
@@ -93,5 +65,29 @@ def get_stock_data():
         logging.error(f"Error fetching stock data: {e}")
         return jsonify({'error': 'Failed to fetch stock data'}), 500
 
+# New chatbot route
+@app.route('/api/chatbot', methods=['POST'])
+def chatbot():
+    data = request.json
+    user_message = data.get('message', '')
+
+    if not user_message:
+        return jsonify({'error': 'No message provided'}), 400
+
+    try:
+        response = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=f"Answer this stock-related question: {user_message}",
+            max_tokens=150,
+            temperature=0.7
+        )
+        chatbot_reply = response.choices[0].text.strip()
+        return jsonify({'response': chatbot_reply})
+
+    except Exception as e:
+        logging.error(f"Error in chatbot: {e}")
+        return jsonify({'error': 'Failed to generate chatbot response'}), 500
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True)  # Start the Flask application
