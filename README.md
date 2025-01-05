@@ -28,7 +28,7 @@ The **Stock Analyzer Website** is a comprehensive platform for investors and tra
 ### Prerequisites
 1. Python (>=3.8)
 2. Node.js (>=14.x)
-3. npm (Node Package Manager)
+3. npm (Node Package Manager).
 4. Virtual Environment (optional but recommended).
 
 ### Steps
