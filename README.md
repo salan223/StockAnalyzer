@@ -13,7 +13,7 @@ The **Stock Analyzer Website** is a comprehensive platform for investors and tra
 
 ## Technology Stack
 ### Frontend
-- **React**: Used for building the user interface.
+- **React**: Used for building the user interface (UI).
 - **React-ChartJS-2**: For interactive data visualization.
 - **TailwindCSS**: Ensures modern and responsive styling.
 
